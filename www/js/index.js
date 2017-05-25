@@ -20,15 +20,26 @@ function Scheduler(name, event) {
 	
 	window.plugins.calendar.listCalendars(function(list) {
 		try {
-			alert(typeof list);
-			
 			list.forEach(function(obj) {
-				alert('Name ' +obj.name + '\nID ' + obj.id);
-				
 				if(obj.name == THIS.name) THIS.id = obj.id;
 			})
 			
-			event();
+			if(THIS.id == null) {
+				
+				var opt = window.plugins.calendar.getCreateCalendarOptions();
+					opt.calendarName = THIS.name;
+					opt.calendarColor = "#FF0000";
+					
+				window.plugins.calendar.createCalendar(opt, 
+					function(e) {
+						document.write( JSON.stringify(e) );
+						event();
+					},Scheduler.ERROR);
+					
+			} else {
+				document.write( JSON.stringify(THIS) );
+			}
+			
 		} catch(e) { alert(e.stack); }
 	}, Scheduler.ERROR);
 	
