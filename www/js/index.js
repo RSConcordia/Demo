@@ -6,47 +6,85 @@ window.addEventListener('load', function() {
 	
 	document.addEventListener('deviceready', function() {
 		
-		calendar = new Scheduler('Teste Calendar', callback);
+		calendar = new Scheduler('Teste Calendar', function() {
+			
+			alert('Calendar ready');
+			
+			calendar.createEvent(
+				{title: 'New Event', location:'Local', notes:'OBS ... ' },
+				{type:'daily', end:new Date(2017,6,1) },
+				new Date(2017,5,25), 
+				function(e) { alert('Event: '+ JSON.stringify(e) ) });
+			
+		});
 		
 	}, false);
 	
 }, false);
 
-function Scheduler(name, event) {
+function Scheduler(name, ready) {
 	this.id = null;
 	this.name = name;
 	
 	var THIS = this;
 	
+	/// 
 	window.plugins.calendar.listCalendars(function(list) {
-		try {
-			list.forEach(function(obj) {
-				if(obj.name == THIS.name) THIS.id = obj.id;
-			})
+		/// varre a lista de calendarios e procura o id
+		list.forEach(function(obj) {
+			if(obj.name == THIS.name) THIS.id = obj.id;
+		})
+		
+		/// se não tiver id, cria o calendario
+		if(THIS.id == null) {
 			
-			if(THIS.id == null) {
+			var opt = window.plugins.calendar.getCreateCalendarOptions();
+				opt.calendarName = THIS.name;
+				opt.calendarColor = "#FF0000";
 				
-				var opt = window.plugins.calendar.getCreateCalendarOptions();
-					opt.calendarName = THIS.name;
-					opt.calendarColor = "#FF0000";
-					
-				window.plugins.calendar.createCalendar(opt, 
-					function(e) {
-						document.write( JSON.stringify(e) );
-						event();
-					},Scheduler.ERROR);
-					
-			} else {
-				document.write( JSON.stringify(THIS) );
-			}
-			
-		} catch(e) { alert(e.stack); }
+			window.plugins.calendar.createCalendar(opt, 
+				function(id) {
+					THIS.id = id;
+					ready();
+				}, Scheduler.ERROR);
+		
+		/// se encotrar o id, o Scheduler esta preparado
+		} else {
+			ready();
+		}
 	}, Scheduler.ERROR);
-	
 };
 
 Scheduler.ERROR = function(e) { alert( 'Scheduler ERROR: \n' + JSON.stringify(e) ) };
 
+Scheduler.prototype.createEvent = function(event, recurrence, date, callback) {
+	try {
+		
+		var opt = window.plugins.calendar.getCalendarOptions(),
+			initi = new Date(date),
+			ended = new Date(date);
+
+		opt.recurrence = recurrence.type; //  daily, weekly, monthly, yearly
+		opt.recurrenceEndDate = recurrence.end; 
+		opt.recurrenceInterval = recurrence.interval || 1;
+		
+		opt.calendarName = this.name; // iOS only
+		opt.calendarId = this.id; 
+		
+		initi.setHours( 8 );
+		ended.setHours( 9 );
+		
+		window.plugins.calendar.createEventWithOptions(
+			event.title, event.location, event.notes, 
+			initi, ended, 
+			opt, 
+			callback, Scheduler.ERROR);
+		
+	} catch (e) { 
+		log(e.stack);
+	}
+	
+};
 
 /*	
 	var event;
