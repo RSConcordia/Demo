@@ -35,7 +35,7 @@ window.addEventListener('load', function() {
 		}
 	}
 	
-	function list() { listCalendars
+	function list() { 
 		event = 'list';
 		
 		try {	
