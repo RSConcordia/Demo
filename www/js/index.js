@@ -39,9 +39,7 @@ window.addEventListener('load', function() {
 		event = 'list';
 		
 		try {	
-			window.plugins.calendar.listCalendars(function(e) {
-					success(e);
-				},error);
+			window.plugins.calendar.listCalendars(success,error);
 		
 		} catch(e) {
 			log(e.stack);
@@ -51,7 +49,7 @@ window.addEventListener('load', function() {
 	
 	document.addEventListener('deviceready', function() {
 		
-		createCalendar();
+		list();
 		
 	}, false);
 	
