@@ -1,6 +1,43 @@
 window.addEventListener('load', function() {
 	'use strict';
 	
+	var calendar,
+		callback = function() { document.write( JSON.stringify( calendar ) ) }
+	
+	document.addEventListener('deviceready', function() {
+		
+		calendar = new Scheduler('Teste Calendar', callback);
+		
+	}, false);
+	
+}, false);
+
+function Scheduler(name, event) {
+	this.id = null;
+	this.name = name;
+	
+	var THIS = this;
+	
+	window.plugins.calendar.listCalendars(function(list) {
+		try {
+			alert(typeof list);
+			
+			list.forEach(function(obj) {
+				alert('Name ' +obj.name + '\nID ' + obj.id);
+				
+				if(obj.name == THIS.name) THIS.id = obj.id;
+			})
+			
+			event();
+		} catch(e) { alert(e.stack); }
+	}, Scheduler.ERROR);
+	
+};
+
+Scheduler.ERROR = function(e) { alert( 'Scheduler ERROR: \n' + JSON.stringify(e) ) };
+
+
+/*	
 	var event;
 	
 	function success(e) {
@@ -76,16 +113,4 @@ window.addEventListener('load', function() {
 			log(e.stack);
 		}
 	};
-	
-	document.addEventListener('deviceready', function() {
-		
-		newEvent();
-		
-	}, false);
-	
-}, false);
-
-
-function color() {
-	return 'rgb('+parseInt(256*Math.random())+','+parseInt(256*Math.random())+','+parseInt(256*Math.random())+')';
-};
+*/	
