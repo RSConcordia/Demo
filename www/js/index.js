@@ -14,13 +14,13 @@ window.addEventListener('load', function() {
 	div.get('#add').onclick = function() {
 		
 		var date = new Date(year.value, month.value, day.value);
-		var rec = new Date(date);
+		var recurrence = new Date(date);
 		
-		rec.setDate( rec.getDate() + daily );
+		recurrence.setDate( recurrence.getDate() + daily.value );
 		
 		calendar.add(
 				{title: name.value, location:'local', notes:'OBS ... ' },
-				{type:'daily', end: rec },
+				{type:'daily', end:recurrence, interval: 1 },
 				date, 
 				function(e) { 
 					alert('Evento: '+ JSON.stringify(e) + 'criado.' ); 
