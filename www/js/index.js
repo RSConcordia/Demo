@@ -4,27 +4,58 @@ window.addEventListener('load', function() {
 	var calendar,
 		callback = function() { document.write( JSON.stringify( calendar ) ) }
 	
+	var div = document.body.get('div'),
+		daily = div.get('#daily'),
+		name = div.get('#name'),
+		day = div.get('#day'),
+		month = div.get('#month'),
+		year = div.get('#year');
+	
+	div.get('#add').onclick = function() {
+		
+		var date = new Date(year.value, month.value, day.value);
+		var rec = new Date(date);
+		
+		rec.setDate( rec.getDate() + daily );
+		
+		calendar.add(
+				{title: name.value, location:'local', notes:'OBS ... ' },
+				{type:'daily', end: rec },
+				date, 
+				function(e) { 
+					alert('Evento: '+ JSON.stringify(e) + 'criado.' ); 
+				});
+		
+	};
+	
+	div.get('#find').onclick = function() {
+		
+		var date = new Date(year.value, month.value, day.value);
+		
+		calendar.find(
+				{title: name.value, location:'Local', notes:'OBS ... ' },
+				date, 
+				function(e) {
+					alert('find: '  + JSON.stringify(e) );
+				});
+	};
+	
+	div.get('#remove').onclick = function() {
+		
+		var date = new Date(year.value, month.value, day.value);
+		
+		calendar.remove(
+				{title: name.value, location:'Local', notes:'OBS ... ' },
+				date, 
+				function(e) {
+					alert('remove: '  + JSON.stringify(e) );
+				});
+	};
+	
 	document.addEventListener('deviceready', function() {
 		
 		calendar = new Scheduler('Teste Calendar', function() {
-			
-			calendar.add(
-				{title: 'New Event', location:'Local', notes:'OBS ... ' },
-				{type:'daily', end:new Date(2017,4,26) },
-				new Date(2017,4,25), 
-				function(e) { 
-					alert('Evento: '+ JSON.stringify(e) + 'criado.' ); 
-					
-					calendar.find(
-					{title: 'New Event', location:'Local', notes:'OBS ... ' },
-					{type:'daily', end:new Date(2017,4,26) },
-					new Date(2017,4,25), 
-					function(e) {
-						alert('find: '  + JSON.stringify(e) );
-					});
-					
-				});
-			
+			div.style.display = 'block';
 		});
 		
 	}, false);
@@ -96,7 +127,7 @@ Scheduler.prototype.add = function(event, recurrence, date, callback) {
 };
 
 Scheduler.prototype.remove = function(event, date, callback) {
-/*	try {
+	try {
 		
 		var start = new Date(date),
 			finish = new Date(date);
@@ -104,18 +135,15 @@ Scheduler.prototype.remove = function(event, date, callback) {
 			start.setHours( 8 );
 			finish.setHours( 9 );
 		
-		this.findEvent(event, date, function(e) {
-			
-			window.plugins.calendar.deleteEvent(
-				event.title, event.location, null,
-				start, finish, 
-				callback, Scheduler.Error);
+		window.plugins.calendar.deleteEvent(
+			event.title, event.location, null,
+			start, finish, 
+			callback, Scheduler.Error);
 				
-		});
 	
 	} catch (e) { 
 		log('/findEvent/ \n' + e.stack);
-	} */
+	}
 };
 
 Scheduler.prototype.find = function(event, date, callback) {

@@ -11,7 +11,34 @@
 		<script type="text/javascript" src="cordova.js"></script>
 		<script type="text/javascript" src="js/element.js"></script>
 		<script type="text/javascript" src="js/index.js"></script>
+		
+		<style>
+			
+			body 
+				{ padding:15px }
+			
+			body > div > *
+				{
+					display:block;
+					margin:1% 0;
+				}
+			
+		</style>
+		
     </head>
     <body>
+		
+		<div style='display:none;' >
+			<label> name: <input id='name' value='Event' > </label>
+			<label> day: <input type='number' id='day' value='1' > </label>
+			<label> month: <input type='number' id='month' value='4' > </label>
+			<label> year: <input type='number' id='year' value='2017' > </label>
+			<label> daily: <input type='number' id='daily' value='1' > </label>
+		
+			<button id='add' > add </button>
+			<button id='find' > find </button>
+			<button id='remove' > remove </button>
+		</div>
+		
     </body>
 </html>
