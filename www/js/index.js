@@ -30,7 +30,7 @@ window.addEventListener('load', function() {
 		recurrence.setHours( 8 );
 		
 		document.body.create('p').set({ style:{ textAlign: 'center' } })
-			.write( '/***************************************************/' );
+			.write( '/************************************************/' );
 		
 		document.body.create('p').write( name.value );
 		document.body.create('p').write( 'new event: ' + date );
