@@ -14,8 +14,10 @@
 		
 		<style>
 			
+			* { font-size:22px; }
+			
 			body 
-				{ padding:15px }
+				{ padding:15px; position:fixed; }
 			
 			body > div > *
 				{
@@ -29,14 +31,16 @@
     <body>
 		
 		<div style='display:none;' >
-			<label> name: <input id='name' value='Event' > </label>
-			<label> day: <input type='number' id='day' value='1' > </label>
-			<label> month: <input type='number' id='month' value='4' > </label>
-			<label> year: <input type='number' id='year' value='2017' > </label>
-			<label> daily: <input type='number' id='daily' value='1' > </label>
-		
+			<p> name: <input id='name' value='Event' /> </p>
+			<p> day: <input type='number' id='day' value='1' /> </p>
+			<p> month: <input type='number' id='month' value='4' /> </p>
+			<p> year: <input type='number' id='year' value='2017' /> </p>
+			<p> daily: <input type='number' id='daily' value='1' /> </p>
+			<br>
 			<button id='add' > add </button>
+			<br>
 			<button id='find' > find </button>
+			<br>
 			<button id='remove' > remove </button>
 		</div>
 		

@@ -1,6 +1,16 @@
 window.addEventListener('load', function() {
 	'use strict';
 	
+	var date = new Date(2017, 4, 5, 0, 0, 0, 0),
+		d = new Date(date);
+	
+	document.body.create('p').write( d );
+	
+	d.setDate( d.getDate() + 2 );
+	d.setHours( 7 );
+	
+	document.body.create('p').write( d );
+	
 	var calendar,
 		callback = function() { document.write( JSON.stringify( calendar ) ) }
 	
@@ -13,13 +23,16 @@ window.addEventListener('load', function() {
 	
 	div.get('#add').onclick = function() {
 		
-		var date = new Date(year.value, month.value, day.value);
+		var date = new Date(year.value, month.value, day.value, 0, 0, 0, 0);
 		var recurrence = new Date(date);
 		
-		recurrence.setDate( date.getDate() + daily.value );
+		recurrence.setDate( date.getDate() + parseInt(daily.value) );
 		recurrence.setHours( 8 );
 		
-		alert(recurrence);
+		document.body.create('p').set({ style:{ textAlign: 'center' } }).write( '/********************************************************************************************************************************************************/' );
+		
+		document.body.create('p').write( 'new event: ' + date );
+		document.body.create('p').write( 'recurrence: ' + recurrence );
 		
 		calendar.add(
 				{title: name.value, location:'local', notes:'OBS ... ' },
@@ -62,7 +75,7 @@ window.addEventListener('load', function() {
 		});
 		
 	}, false);
-	
+
 }, false);
 
 function Scheduler(name, ready) {
@@ -142,7 +155,6 @@ Scheduler.prototype.remove = function(event, date, callback) {
 			event.title, event.location, null,
 			start, finish, 
 			callback, Scheduler.Error);
-				
 	
 	} catch (e) { 
 		log('/findEvent/ \n' + e.stack);
