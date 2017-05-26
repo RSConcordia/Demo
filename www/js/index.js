@@ -1,7 +1,7 @@
 window.addEventListener('load', function() {
 	'use strict';
 	
-	var date = new Date(2017, 4, 5, 0, 0, 0, 0),
+	var date = new Date(2017, 4, 26, 0, 0, 0, 0),
 		d = new Date(date);
 	
 	document.body.create('p').write( d );
@@ -29,8 +29,10 @@ window.addEventListener('load', function() {
 		recurrence.setDate( date.getDate() + parseInt(daily.value) );
 		recurrence.setHours( 8 );
 		
-		document.body.create('p').set({ style:{ textAlign: 'center' } }).write( '/********************************************************************************************************************************************************/' );
+		document.body.create('p').set({ style:{ textAlign: 'center' } })
+			.write( '/***************************************************/' );
 		
+		document.body.create('p').write( name.value );
 		document.body.create('p').write( 'new event: ' + date );
 		document.body.create('p').write( 'recurrence: ' + recurrence );
 		
