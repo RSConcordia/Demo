@@ -8,13 +8,22 @@ window.addEventListener('load', function() {
 		
 		calendar = new Scheduler('Teste Calendar', function() {
 			
-			alert('Calendar ready');
-			
-			calendar.createEvent(
+			calendar.add(
 				{title: 'New Event', location:'Local', notes:'OBS ... ' },
-				{type:'daily', end:new Date(2017,6,1) },
-				new Date(2017,5,25), 
-				function(e) { alert('Event: '+ JSON.stringify(e) ) });
+				{type:'daily', end:new Date(2017,4,26) },
+				new Date(2017,4,25), 
+				function(e) { 
+					alert('Evento: '+ JSON.stringify(e) + 'criado.' ); 
+					
+					calendar.find(
+					{title: 'New Event', location:'Local', notes:'OBS ... ' },
+					{type:'daily', end:new Date(2017,4,26) },
+					new Date(2017,4,25), 
+					function(e) {
+						alert('find: '  + JSON.stringify(e) );
+					});
+					
+				});
 			
 		});
 		
@@ -45,24 +54,25 @@ function Scheduler(name, ready) {
 			window.plugins.calendar.createCalendar(opt, 
 				function(id) {
 					THIS.id = id;
+					alert('Calendar create');
 					ready();
-				}, Scheduler.ERROR);
+				}, Scheduler.Error);
 		
 		/// se encotrar o id, o Scheduler esta preparado
 		} else {
 			ready();
 		}
-	}, Scheduler.ERROR);
+	}, Scheduler.Error);
 };
 
-Scheduler.ERROR = function(e) { alert( 'Scheduler ERROR: \n' + JSON.stringify(e) ) };
+Scheduler.Error = function(e) { alert( 'Scheduler ERROR: \n' + JSON.stringify(e) ) };
 
-Scheduler.prototype.createEvent = function(event, recurrence, date, callback) {
+Scheduler.prototype.add = function(event, recurrence, date, callback) {
 	try {
 		
 		var opt = window.plugins.calendar.getCalendarOptions(),
-			initi = new Date(date),
-			ended = new Date(date);
+			start = new Date(date),
+			finish = new Date(date);
 
 		opt.recurrence = recurrence.type; //  daily, weekly, monthly, yearly
 		opt.recurrenceEndDate = recurrence.end; 
@@ -71,95 +81,57 @@ Scheduler.prototype.createEvent = function(event, recurrence, date, callback) {
 		opt.calendarName = this.name; // iOS only
 		opt.calendarId = this.id; 
 		
-		initi.setHours( 8 );
-		ended.setHours( 9 );
+		start.setHours( 8 );
+		finish.setHours( 9 );
 		
 		window.plugins.calendar.createEventWithOptions(
 			event.title, event.location, event.notes, 
-			initi, ended, 
+			start, finish, 
 			opt, 
-			callback, Scheduler.ERROR);
+			callback, Scheduler.Error);
 		
 	} catch (e) { 
-		log(e.stack);
+		log('/createEvent/ \n' + e.stack);
 	}
-	
 };
 
-/*	
-	var event;
-	
-	function success(e) {
-		log('success: '+event+' <br> '+JSON.stringify(e));
-	};
-	function error(e) {
-		log('success: '+event+' <br> '+JSON.stringify(e));
-	};
-	
-	function log(message) {	
-		document.body.create('div').write(message)
-			.set({ style:{ width:'90%', padding:'5%', color: color() } });
-	};
-	
-	function createCalendar() {
-		event = 'createCalendar';
+Scheduler.prototype.remove = function(event, date, callback) {
+/*	try {
 		
-		try {
+		var start = new Date(date),
+			finish = new Date(date);
+		
+			start.setHours( 8 );
+			finish.setHours( 9 );
+		
+		this.findEvent(event, date, function(e) {
 			
-			var createCalOptions = window.plugins.calendar.getCreateCalendarOptions();
-				createCalOptions.calendarName = "My Cal Name";
-				createCalOptions.calendarColor = "#FF0000";
+			window.plugins.calendar.deleteEvent(
+				event.title, event.location, null,
+				start, finish, 
+				callback, Scheduler.Error);
 				
-			window.plugins.calendar.createCalendar(createCalOptions,
-				function(e) {
-					success(e);
-					list();
-				},error);
-		
-		} catch(e) {
-			log(e.stack);
-		}
-	}
+		});
 	
-	function list() { 
-		event = 'list';
-		
-		try {	
-			window.plugins.calendar.listCalendars(success,error);
-		
-		} catch(e) {
-			log(e.stack);
-		}
-		
-	}
-	
-	function newEvent() {
-		event = 'createEventWithOptions';
-		
-		try {
-			 // create an event silently (on Android < 4 an interactive dialog is shown which doesn't use this options) with options:
-			var calOptions = window.plugins.calendar.getCalendarOptions(); // grab the defaults
-			calOptions.firstReminderMinutes = 120; // default is 60, pass in null for no reminder (alarm)
-			calOptions.secondReminderMinutes = 5;
+	} catch (e) { 
+		log('/findEvent/ \n' + e.stack);
+	} */
+};
 
-			// Added these options in version 4.2.4:
-			calOptions.recurrence = "monthly"; // supported are: daily, weekly, monthly, yearly
-			calOptions.recurrenceEndDate = new Date(2017,6,1,0,0,0,0,0); // leave null to add events into infinity and beyond
-			calOptions.calendarName = "My Cal Name"; // iOS only
-			calOptions.calendarId = 5; // Android only, use id obtained from listCalendars() call which is described below. This will be ignored on iOS in favor of calendarName and vice versa. Default: 1.
-
-			// This is new since 4.2.7:
-			calOptions.recurrenceInterval = 2; // once every 2 months in this case, default: 1
-
-			// And the URL can be passed since 4.3.2 (will be appended to the notes on Android as there doesn't seem to be a sep field)
-		//	calOptions.url = "https://www.google.com";
-
-			// on iOS the success handler receives the event ID (since 4.3.6)
-			window.plugins.calendar.createEventWithOptions(
-				'title','eventLocation','notes', new Date(2017,6,1), new Date(2017,6,2),calOptions,success,error);
+Scheduler.prototype.find = function(event, date, callback) {
+	try {
+		var start = new Date(date),
+			finish = new Date(date);
 			
-		} catch (e) { 
-			log(e.stack);
-		}
-	};
-*/	
+			start.setHours( 8 );
+			finish.setHours( 9 );
+			
+		window.plugins.calendar.findEvent(
+			event.title, event.location, event.notes,
+			start, finish, 
+			callback, Scheduler.Error);
+	
+	} catch (e) { 
+		log('/findEvent/ \n' + e.stack);
+	}
+};
