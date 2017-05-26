@@ -24,6 +24,25 @@ window.addEventListener('load', function() {
 	div.get('#add').onclick = function() {
 		
 		var date = new Date(year.value, month.value, day.value, 0, 0, 0, 0);
+		
+		document.body.create('p').set({ style:{ textAlign: 'center' } })
+			.write( '/************************************************/' );
+		
+		document.body.create('p').write( 'add : ' + name.value );
+		document.body.create('p').write( 'new event: ' + date );
+		
+		Scheduler.add(
+				{title: name.value, location:'local', notes:'OBS ... ' },
+				date, 
+				function(e) { 
+					alert('Evento: '+ JSON.stringify(e) + 'criado.' ); 
+				});
+		
+	};
+	
+	div.get('#add-opt').onclick = function() {
+		
+		var date = new Date(year.value, month.value, day.value, 0, 0, 0, 0);
 		var recurrence = new Date(date);
 		
 		recurrence.setDate( date.getDate() + parseInt(daily.value) );
@@ -32,11 +51,55 @@ window.addEventListener('load', function() {
 		document.body.create('p').set({ style:{ textAlign: 'center' } })
 			.write( '/************************************************/' );
 		
-		document.body.create('p').write( name.value );
+		document.body.create('p').write( 'Opt : ' + name.value );
 		document.body.create('p').write( 'new event: ' + date );
 		document.body.create('p').write( 'recurrence: ' + recurrence );
 		
-		calendar.add(
+		calendar.addOpt(
+				{title: name.value, location:'local', notes:'OBS ... ' },
+				{type:'daily', end:recurrence, interval: 1 },
+				date, 
+				function(e) { 
+					alert('Evento: '+ JSON.stringify(e) + 'criado.' ); 
+				});
+		
+	};
+	
+	div.get('#add-inter').onclick = function() {
+		
+		var date = new Date(year.value, month.value, day.value, 0, 0, 0, 0);
+		
+		document.body.create('p').set({ style:{ textAlign: 'center' } })
+			.write( '/************************************************/' );
+		
+		document.body.create('p').write( 'Inter : ' + name.value );
+		document.body.create('p').write( 'new event: ' + date );
+		
+		Scheduler.addInter(
+				{title: name.value, location:'local', notes:'OBS ... ' },
+				date, 
+				function(e) { 
+					alert('Evento: '+ JSON.stringify(e) + 'criado.' ); 
+				});
+		
+	};
+	
+	div.get('#add-full').onclick = function() {
+		
+		var date = new Date(year.value, month.value, day.value, 0, 0, 0, 0);
+		var recurrence = new Date(date);
+		
+		recurrence.setDate( date.getDate() + parseInt(daily.value) );
+		recurrence.setHours( 8 );
+		
+		document.body.create('p').set({ style:{ textAlign: 'center' } })
+			.write( '/************************************************/' );
+		
+		document.body.create('p').write( 'Full : ' + name.value );
+		document.body.create('p').write( 'new event: ' + date );
+		document.body.create('p').write( 'recurrence: ' + recurrence );
+		
+		calendar.addOptInter(
 				{title: name.value, location:'local', notes:'OBS ... ' },
 				{type:'daily', end:recurrence, interval: 1 },
 				date, 
@@ -50,7 +113,7 @@ window.addEventListener('load', function() {
 		
 		var date = new Date(year.value, month.value, day.value);
 		
-		calendar.find(
+		Scheduler.find(
 				{title: name.value, location:'Local', notes:'OBS ... ' },
 				date, 
 				function(e) {
@@ -62,7 +125,7 @@ window.addEventListener('load', function() {
 		
 		var date = new Date(year.value, month.value, day.value);
 		
-		calendar.remove(
+		Scheduler.remove(
 				{title: name.value, location:'Local', notes:'OBS ... ' },
 				date, 
 				function(e) {
@@ -114,9 +177,7 @@ function Scheduler(name, ready) {
 	}, Scheduler.Error);
 };
 
-Scheduler.Error = function(e) { alert( 'Scheduler ERROR: \n' + JSON.stringify(e) ) };
-
-Scheduler.prototype.add = function(event, recurrence, date, callback) {
+Scheduler.prototype.addOpt = function(event, recurrence, date, callback) {
 	try {
 		
 		var opt = window.plugins.calendar.getCalendarOptions(),
@@ -140,11 +201,79 @@ Scheduler.prototype.add = function(event, recurrence, date, callback) {
 			callback, Scheduler.Error);
 		
 	} catch (e) { 
-		log('/createEvent/ \n' + e.stack);
+		log('/addOpt/ \n' + e.stack);
 	}
 };
 
-Scheduler.prototype.remove = function(event, date, callback) {
+Scheduler.prototype.addOptInter = function(event, recurrence, date, callback) {
+	try {
+		
+		var opt = window.plugins.calendar.getCalendarOptions(),
+			start = new Date(date),
+			finish = new Date(date);
+
+		opt.recurrence = recurrence.type; //  daily, weekly, monthly, yearly
+		opt.recurrenceEndDate = recurrence.end; 
+		opt.recurrenceInterval = recurrence.interval || 1;
+		
+		opt.calendarName = this.name; // iOS only
+		opt.calendarId = this.id; 
+		
+		start.setHours( 8 );
+		finish.setHours( 9 );
+		
+		window.plugins.calendar.createEventInteractivelyWithOptions(
+			event.title, event.location, event.notes, 
+			start, finish, 
+			opt, 
+			callback, Scheduler.Error);
+		
+	} catch (e) { 
+		log('/addOptInter/ \n' + e.stack);
+	}
+};
+
+Scheduler.Error = function(e) { alert( 'Scheduler ERROR: \n' + JSON.stringify(e) ) };
+
+Scheduler.add = function(event, date, callback) {
+	try {
+		
+		var start = new Date(date),
+			finish = new Date(date);
+		
+		start.setHours( 8 );
+		finish.setHours( 9 );
+		
+		// create an event silently (on Android < 4 an interactive dialog is shown)
+		window.plugins.calendar.createEvent(
+			event.title, event.location, event.notes, 
+			start, finish, 
+			callback, Scheduler.Error);
+		
+	} catch (e) { 
+		log('/add/ \n' + e.stack);
+	}
+};
+
+Scheduler.addInter = function(event, date, callback) {
+	try {
+		var start = new Date(date),
+			finish = new Date(date);
+
+		start.setHours( 8 );
+		finish.setHours( 9 );
+		
+		window.plugins.calendar.createEventInteractively(
+			event.title, event.location, event.notes, 
+			start, finish, 
+			callback, Scheduler.Error);
+			
+	} catch (e) { 
+		log('/addInter/ \n' + e.stack);
+	}
+};
+
+Scheduler.remove = function(event, date, callback) {
 	try {
 		
 		var start = new Date(date),
@@ -163,7 +292,7 @@ Scheduler.prototype.remove = function(event, date, callback) {
 	}
 };
 
-Scheduler.prototype.find = function(event, date, callback) {
+Scheduler.find = function(event, date, callback) {
 	try {
 		var start = new Date(date),
 			finish = new Date(date);
