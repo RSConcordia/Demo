@@ -16,7 +16,10 @@ window.addEventListener('load', function() {
 		var date = new Date(year.value, month.value, day.value);
 		var recurrence = new Date(date);
 		
-		recurrence.setDate( recurrence.getDate() + daily.value );
+		recurrence.setDate( date.getDate() + daily.value );
+		recurrence.setHours( 8 );
+		
+		alert(recurrence);
 		
 		calendar.add(
 				{title: name.value, location:'local', notes:'OBS ... ' },
