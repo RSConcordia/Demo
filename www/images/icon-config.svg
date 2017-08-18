@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" 
+	viewBox="0 0 150 150" >
+	<g transform = "translate(40 30)" fill="none" stroke="rgb(255,255,255)" stroke-width="3" >
+	<circle r="6" cx="30" cy="26"/>
+	<circle r="8" cx="50" cy="50" fill="rgb(255,255,255)"/>
+	<circle r="6" cx="30" cy="71"/>
+	</g>
+</svg>

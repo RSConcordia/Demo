@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" 
+	viewBox="0 0 150 150" fill="rgb(255,255,255)" stroke="rgb(255,255,255)">
+	<path 
+		transform = "translate(40 30)"
+		d="M15 50 L50 20 
+			 M15 50 L50 80
+			 C50 80 15 50 50 20z"
+		stroke-width="3"
+	></path>
+</svg>

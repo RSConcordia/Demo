@@ -1,0 +1,19 @@
+.toolbox {
+	position:absolute; padding:5px; 
+	border-radius:5px;
+	background-color:rgb(255,255,255);
+	box-shadow:0px 0px 15px rgba(25,25,25, .3); 
+	border:1px solid rgba(25,25,25, .3); 
+	z-index:100;
+	transition:all .5s;
+}
+.toolbox > button { padding:7px 15px; border:none; background-color:transparent; }
+.toolbox > button:hover { background-color:rgb(235,235,235); }
+.toolbox > span {
+	position:absolute;
+	margin-top:-35px;
+	border:15px solid rgba(25,25,25, .6); 
+	border-left-color:rgba(0,0,0,.0);
+	border-top-color:rgba(0,0,0,.0);
+	border-right-color:rgba(0,0,0,.0);
+}
