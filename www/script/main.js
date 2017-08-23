@@ -1,4 +1,5 @@
-window.addEventListener('load', function() {
+//window.addEventListener('load', function() {
+document.addEventListener('deviceready', function() {
 	'use strict';
 	
 	var url = 'http://v-id.net/demo.php';
@@ -9,8 +10,9 @@ window.addEventListener('load', function() {
 	
 	document.querySelector('button').onclick = function() {
 		try {
-			
-			window.resolveLocalFileSystemURI( input.value, function(entry) {
+			/// resolveLocalFileSystemURL
+		//	window.resolveLocalFileSystemURI( input.value, function(entry) {
+			window.resolveLocalFileSystemURL( input.value, function(entry) {
 				
 				try {
 				
@@ -31,7 +33,25 @@ window.addEventListener('load', function() {
 		
 		} catch(er) { alert( er.stack ); }
 	};
-	
+
+/*	document.querySelector('button').onclick = function() {
+		try {
+			
+			var onErrorLoadFs = function(e) { alert( JSON.stringify( e ) ) };
+			
+			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
+
+				alert('file system open: ' + fs.name);
+				
+				div.innerHTML = JSON.stringify( e );
+				
+				getSampleFile(fs.root);
+
+			}, onErrorLoadFs);
+		
+		} catch(er) { alert( er.stack ); }
+	};
+*/	
 	
 	var ctrl = new toolBox();
 		ctrl.add( 'fa fa-info', function(e) { console.log( this ); });
