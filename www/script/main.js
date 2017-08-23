@@ -8,6 +8,8 @@ document.addEventListener('deviceready', function() {
 	
 	var div = document.getElementById('result');
 	
+	div.innerHTML = 'loaded';
+	
 /*/	document.querySelector('button').onclick = function() {
 		try {
 			/// resolveLocalFileSystemURL
