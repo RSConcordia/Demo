@@ -8,12 +8,15 @@
 	
 	<link rel='stylesheet' href='style/font-awesome/css/font-awesome.min.css' />
 	<link rel='stylesheet' href='style/index.css' />
-	
 	<link rel='stylesheet' href='style/toolbox.css' />
-	<script type="text/javascript" src="lib/toolbox.js"></script>
+	
+	
+	<script type="text/javascript" src="lib/core.js"></script>
 	
 	<script type="text/javascript" src="lib/app.js"></script>
 	<script type="text/javascript" src="lib/element.js"></script>
+	<script type="text/javascript" src="lib/toolbox.js"></script>
+	<script type="text/javascript" src="lib/select.js"></script>
 	
 	<script type="text/javascript" src="script/main.js"></script>
 	
@@ -21,25 +24,26 @@
   <body>
 	
 	<header>
-		<button id='btn-back' class='left' >
+		<!--button id='btn-back' class='left' >
 			<object type='image/svg+xml' data='images/icon-arrow.svg' width='50' height='50' ></object>
 		</button>
 		
 		<button id='btn-menu' class='right' >
 			<object type='image/svg+xml' data='images/icon-config.svg' width='50' height='50' ></object>
-		</button>
+		</button-->
 		
 		
 	</header>
 	
 	<main>
 		
-		<section class='s-upload'>
-			<h1> Upload </h1>
+		<section class='s-select'>
 			
-			<div>
-				
-			</div>
+			<input id='flocal' placeholder='Local File' />
+			
+			<button> Go! </button>
+			
+			<div id='result' ></div>
 			
 		</section>
 		

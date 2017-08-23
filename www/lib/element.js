@@ -1,5 +1,4 @@
 /*! Element.prototype 
- *	 
  */ 
 Object.assign( Element.prototype, {
 	
@@ -36,6 +35,7 @@ Object.assign( Element.prototype, {
 		if(this.parentNode) {
 			this.parentNode.removeChild( this );
 		}
+		return this.parentNode
 	},
 	
 	/** write
@@ -50,7 +50,7 @@ Object.assign( Element.prototype, {
 		
 	/** set
 	 *	
-	 *	@param (Object)	attr	
+	 *	@param (Object)	attr
 	 *	return (Element)
 	 */
 	set: function( attr ) {

@@ -17,8 +17,8 @@ function Canvas( w, h ) {
 	 *	
 	 *	@param (String) color
 	 */
-	function clear( color = 'rgb(0,0,0)' ) {
-		ctx.fillStyle = color;
+	function clear( color ) {
+		ctx.fillStyle = color || 'rgb(0,0,0)';
 		ctx.fillRect(0, 0, width, height);
 	};
 	
@@ -42,10 +42,10 @@ function Canvas( w, h ) {
 	 *	@param (Number) y		y			!Default: 0
 	 *	return (Object)			ImageData
 	 */
-	function getData( w, h, x = 0, y = 0 ) {
+	function getData( w, h, x, y ) {
 		w = (w === undefined)? width : w;
 		h = (h === undefined)? height : h;
-		return ctx.getImageData(x, y, w, h);
+		return ctx.getImageData(x || 0, y || 0, w, h);
 	};
 	
 	/** setData
@@ -54,8 +54,8 @@ function Canvas( w, h ) {
 	 *	@param (Number) x		x			!Default: 0
 	 *	@param (Number) y		y			!Default: 0
 	 */
-	function setData( data, x = 0, y = 0 ) {
-		ctx.putImageData( data, x, y );
+	function setData( data, x, y ) {
+		ctx.putImageData( data, x || 0, y || 0);
 	};
 	
 	/** setImage
@@ -84,9 +84,11 @@ function Canvas( w, h ) {
 	 *	
 	 *	@param (Number) min
 	 */
-	function whiteTransparent( min = 235) {
+	function whiteTransparent( min ) {
 		var idata = getData(),
 			data = idata.data, i;
+		
+		if( min == undefined || min == null ) min = 235;
 		
 		for(i = 0; i < data.length; i+=4) {
 			if( data[i] > min && data[i+1] > min && data[i+2] > min )  data[i+3] = 0.0;
@@ -197,9 +199,9 @@ function Canvas( w, h ) {
 	 *	@param (Number) y
 	 *	@param (String) color
 	 */
-	function write( str, x, y, color = 'rgb(255,255,255)' ) {
+	function write( str, x, y, color ) {
 		ctx.beginPath();
-		ctx.fillStyle = color;
+		ctx.fillStyle = color || 'rgb(255,255,255)';
 		ctx.fillText( str, x, y );
 		ctx.fill();
 		ctx.closePath();

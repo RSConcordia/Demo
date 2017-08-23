@@ -7,7 +7,7 @@
  *	@param (Number)	b
  *	@param (Float) 	a 	!Default: 1.0 		Alpha: 0.0 < a < 1.0 
  */
-function Color( r, g, b, a = 1 ) {
+function Color( r, g, b, a ) {
 	
 	if( Color.REGEX_RGB.test( r ) ) {
 		r = r.replace(/[rgb()]/g, '').split(',');
@@ -53,7 +53,7 @@ function Color( r, g, b, a = 1 ) {
 	this.r = parseInt(r);
 	this.g = parseInt(g);
 	this.b = parseInt(b);
-	this.a = a;
+	this.a = ( a == undefined )? 1.0 : a;
 };
 
 Object.assign( Color.prototype, {
