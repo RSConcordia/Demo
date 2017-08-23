@@ -10,14 +10,14 @@ document.addEventListener('deviceready', function() {
 	
 	div.innerHTML = 'loaded';
 	
-/*/	document.querySelector('button').onclick = function() {
+	document.querySelector('button').onclick = function() {
 		try {
-			/// resolveLocalFileSystemURL
-		//	window.resolveLocalFileSystemURI( input.value, function(entry) {
-			window.resolveLocalFileSystemURL( input.value, function(entry) {
+			window.resolveLocalFileSystemURI( input.value, function(entry) {
 				
 				try {
-				
+					
+					alert( JSON.stringify( entry ) )
+					
 					entry.createReader().readEntries( function(e) {
 						
 						try {
@@ -34,18 +34,16 @@ document.addEventListener('deviceready', function() {
 		
 		
 		} catch(er) { alert( er.stack ); }
-	};*/
+	};
 
-	document.querySelector('button').onclick = function() {
+/*	document.querySelector('button').onclick = function() {
 		try {
 			
 			var error = function(e) { alert( JSON.stringify( e ) ) };
 			
 			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
 
-				alert(fs.root);
-				alert( JSON.stringify( e ) );
-				alert('file system open: ' + fs.root);
+				alert( JSON.stringify( fs.root ) );
 				
 				div.innerHTML = JSON.stringify( e );
 				
@@ -93,6 +91,6 @@ document.addEventListener('deviceready', function() {
 		}
 		
 	}
-
+*/
 }, false);
 
