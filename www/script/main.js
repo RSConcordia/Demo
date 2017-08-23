@@ -41,6 +41,25 @@ document.addEventListener('deviceready', function() {
 			
 			var error = function(e) { alert( JSON.stringify( e ) ) };
 			
+			window.resolveLocalFileSystemURL('file:///storage/extSdCard/‌​', function (fs) {
+				
+				alert( JSON.stringify( fs ) );
+				
+				div.innerHTML = JSON.stringify( fs );
+				div.innerHTML += '<br><br><br><br>';
+				
+				div.innerHTML = JSON.stringify( fs.__proto__ );
+				
+			}, error );
+		
+		} catch(er) { alert( er.stack ); }
+	};
+	
+/*	document.querySelector('button').onclick = function() {
+		try {
+			
+			var error = function(e) { alert( JSON.stringify( e ) ) };
+			
 			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
 
 				alert( JSON.stringify( fs.root ) );
