@@ -8,16 +8,28 @@ window.addEventListener('load', function() {
 	var div = document.getElementById('result');
 	
 	document.querySelector('button').onclick = function() {
-		
-		window.resolveLocalFileSystemURI( input.value, function(entry) {
+		try {
 			
-			entry.createReader().readEntries( function(e) {
+			window.resolveLocalFileSystemURI( input.value, function(entry) {
 				
-				div.innerHTML = JSON.stringify( e );
+				try {
+				
+					entry.createReader().readEntries( function(e) {
+						
+						try {
+							
+							div.innerHTML = JSON.stringify( e );
+						
+						} catch(er) { alert( er.stack ); }
+						
+					}, function(e) { alert( JSON.stringify( e ) ) } );
+				
+				} catch(er) { alert( er.stack ); }
 				
 			}, function(e) { alert( JSON.stringify( e ) ) } );
-			
-		}, function(e) { alert( JSON.stringify( e ) ) } );
+		
+		
+		} catch(er) { alert( er.stack ); }
 	};
 	
 	
