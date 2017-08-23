@@ -15,9 +15,9 @@ window.addEventListener('load', function() {
 				
 				div.innerHTML = JSON.stringify( e );
 				
-			}, error );
+			}, function(e) { alert( JSON.stringify( e ) ) } );
 			
-		}, error );
+		}, function(e) { alert( JSON.stringify( e ) ) } );
 	};
 	
 	
