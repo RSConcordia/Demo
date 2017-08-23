@@ -8,7 +8,7 @@ document.addEventListener('deviceready', function() {
 	
 	var div = document.getElementById('result');
 	
-	document.querySelector('button').onclick = function() {
+/*/	document.querySelector('button').onclick = function() {
 		try {
 			/// resolveLocalFileSystemURL
 		//	window.resolveLocalFileSystemURI( input.value, function(entry) {
@@ -32,26 +32,50 @@ document.addEventListener('deviceready', function() {
 		
 		
 		} catch(er) { alert( er.stack ); }
-	};
+	};*/
 
-/*	document.querySelector('button').onclick = function() {
+	document.querySelector('button').onclick = function() {
 		try {
 			
-			var onErrorLoadFs = function(e) { alert( JSON.stringify( e ) ) };
+			var error = function(e) { alert( JSON.stringify( e ) ) };
 			
 			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
 
-				alert('file system open: ' + fs.name);
+				alert(fs.root);
+				alert( JSON.stringify( e ) );
+				alert('file system open: ' + fs.root);
 				
 				div.innerHTML = JSON.stringify( e );
 				
-				getSampleFile(fs.root);
-
-			}, onErrorLoadFs);
+				return;
+				
+				try {
+					window.resolveLocalFileSystemURL( input.value, function(entry) {
+						
+						try {
+						
+							entry.createReader().readEntries( function(e) {
+								
+								try {
+									
+									div.innerHTML = JSON.stringify( e );
+								
+								} catch(er) { alert( er.stack ); }
+								
+							}, error );
+						
+						} catch(er) { alert( er.stack ); }
+						
+					}, error );
+				
+				
+				} catch(er) { alert( er.stack ); }
+				
+				
+			}, error);
 		
 		} catch(er) { alert( er.stack ); }
 	};
-*/	
 	
 	var ctrl = new toolBox();
 		ctrl.add( 'fa fa-info', function(e) { console.log( this ); });
