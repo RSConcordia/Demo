@@ -10,7 +10,7 @@ document.addEventListener('deviceready', function() {
 	
 	div.innerHTML = 'loaded';
 	
-	document.querySelector('button').onclick = function() {
+/*	document.querySelector('button').onclick = function() {
 		try {
 			window.resolveLocalFileSystemURI( input.value, function(entry) {
 				
@@ -35,8 +35,8 @@ document.addEventListener('deviceready', function() {
 		
 		} catch(er) { alert( er.stack ); }
 	};
-
-/*	document.querySelector('button').onclick = function() {
+*/
+	document.querySelector('button').onclick = function() {
 		try {
 			
 			var error = function(e) { alert( JSON.stringify( e ) ) };
@@ -45,29 +45,19 @@ document.addEventListener('deviceready', function() {
 
 				alert( JSON.stringify( fs.root ) );
 				
-				div.innerHTML = JSON.stringify( e );
+				div.innerHTML = JSON.stringify( fs.root );
 				
 				return;
 				
 				try {
-					window.resolveLocalFileSystemURL( input.value, function(entry) {
-						
-						try {
-						
-							entry.createReader().readEntries( function(e) {
-								
-								try {
-									
-									div.innerHTML = JSON.stringify( e );
-								
-								} catch(er) { alert( er.stack ); }
-								
-							}, error );
-						
-						} catch(er) { alert( er.stack ); }
-						
-					}, error );
+					
 				
+						fs.root.getDirectory(dirName, {}, function(dirEntry) {
+							
+							fileEntry.moveTo(dirEntry);
+							
+						}, error);
+
 				
 				} catch(er) { alert( er.stack ); }
 				
@@ -76,7 +66,7 @@ document.addEventListener('deviceready', function() {
 		
 		} catch(er) { alert( er.stack ); }
 	};
-	
+/*	
 	var ctrl = new toolBox();
 		ctrl.add( 'fa fa-info', function(e) { console.log( this ); });
 		ctrl.add( 'fa fa-edit grey', function(e) { console.log( this ); });
