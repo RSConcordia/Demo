@@ -41,7 +41,7 @@ document.addEventListener('deviceready', function() {
 			
 			var error = function(e) { alert( JSON.stringify( e ) ) };
 			
-			window.resolveLocalFileSystemURL('file:///storage/extSdCard/‌​', function (fs) {
+			window.resolveLocalFileSystemURL( input.value, function (fs) {
 				
 				alert( JSON.stringify( fs ) );
 				
